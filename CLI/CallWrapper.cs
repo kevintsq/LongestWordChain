@@ -9,18 +9,17 @@ namespace CLI
     internal class CallWrapper
         // Wrapper module for calling Core, should be rewritten to call by loading lib(dll) at stage 2.
     {
-        public static unsafe List<String> CallCoreByOptions(string inputFileName, OperationType type, char head, char tail, bool loop)
+        public static unsafe List<string> CallCoreByOptions(string inputFileName, OperationType type, char head, char tail, bool loop)
         {
             char*[] forWords = new char*[10501]; // Allocate space for ptr.
-            int wordNum = 0;
-
-            wordNum = Parser.parse(inputFileName, forWords);
+            
+            int wordNum = Parser.Parse(inputFileName, forWords);
 
             char*[] forResults = new char*[20501]; // Allocate space for ptr.
-            int reNum = 0;
+            
+            int reNum;
 
             List<string> re = new List<string>();
-
 
             switch (type)
             {
@@ -55,7 +54,6 @@ namespace CLI
             */
 
             return re;
-
         }
     }
 }

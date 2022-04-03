@@ -8,7 +8,7 @@ namespace Core
 {
     internal class Utility
     {
-        public static unsafe List<String> convertFromCharArrayToString(char*[] toConvert, int len)
+        public static unsafe List<string> ConvertFromCharArrayToString(char*[] toConvert, int len)
         {
             List<string> result = new List<string>();
             for (int i = 0; i < len; i++)

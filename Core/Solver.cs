@@ -13,17 +13,17 @@ namespace Core
         private Graph graph;
         private Queue<Node> topoNodes;
 
-        public bool judgeCircle()
+        public bool JudgeCircle()
         {
             Dictionary<string, Node> tempNodes = new Dictionary<string, Node>();
 
             foreach (var name in graph.nodeSet.Keys)
             {
                 Node node = graph.nodeSet[name];
-                tempNodes.Add(name, node.deepCloneNode());
+                tempNodes.Add(name, node.DeepCloneNode());
             }
 
-            this.topoNodes = new Queue<Node>();
+            topoNodes = new Queue<Node>();
 
             while (true)
             {
@@ -55,16 +55,14 @@ namespace Core
                     return true;
                 }
             }
-
-            return false;
         }
 
         private Dictionary<Node, bool> isVisit;
 
-        private List<Path> paths = new List<Path>();
+        private readonly List<Path> paths = new List<Path>();
 
         // GET_PATH_ALL
-        public void findPath(Node nowNode, Path nowPath)
+        public void FindPath(Node nowNode, Path nowPath)
         {
             isVisit[nowNode] = true;
             if (nowNode.Equals(graph.EndNode))
@@ -83,10 +81,10 @@ namespace Core
                         continue;
                     }
 
-                    Path nextPath = nowPath.clonePath();
+                    Path nextPath = nowPath.ClonePath();
                     nextPath.edgeList.Add(edge);
                     nextPath.weight += edge.weight;
-                    findPath(edge.to, nextPath);
+                    FindPath(edge.to, nextPath);
                 }
             }
 
@@ -94,7 +92,7 @@ namespace Core
             return;
         }
 
-        public List<string> solveGenerateAll(List<string> words)
+        public List<string> SolveGenerateAll(List<string> words)
         {
             List<string> results = new List<string>();
             List<List<Edge>> chains = new List<List<Edge>>();
@@ -104,11 +102,11 @@ namespace Core
             //     Console.WriteLine(word);
             // }
 
-            this.graph = new Graph();
-            graph.buildGraghForAllWords(words);
+            graph = new Graph();
+            graph.BuildGraghForAllWords(words);
             // graph.debugOutput();
 
-            bool isDAG = judgeCircle();
+            bool isDAG = JudgeCircle();
 
             // Console.WriteLine(isDAG);
             //
@@ -135,17 +133,17 @@ namespace Core
             //     Console.WriteLine($"{key.word}: {isVisit[key]}");
             // }
 
-            findPath(graph.StartNode, new Path());
+            FindPath(graph.StartNode, new Path());
             foreach (var path in paths)
             {
-                results.Add(path.outputPath());
+                results.Add(path.OutputPath());
             }
 
             return results;
         }
 
         // GET_PATH_UNIQUE
-        public void findPathUnique(Node nowNode, Path nowPath, HashSet<char> usedAlphabet)
+        public void FindPathUnique(Node nowNode, Path nowPath, HashSet<char> usedAlphabet)
         {
             isVisit[nowNode] = true;
             if (nowNode.Equals(graph.EndNode))
@@ -164,14 +162,16 @@ namespace Core
                         continue;
                     }
 
-                    Path nextPath = nowPath.clonePath();
+                    Path nextPath = nowPath.ClonePath();
 
-                    HashSet<char> nextUsedAlphabet = new HashSet<char>(usedAlphabet);
-                    nextUsedAlphabet.Add(edge.to.begin);
+                    HashSet<char> nextUsedAlphabet = new HashSet<char>(usedAlphabet)
+                    {
+                        edge.to.begin
+                    };
 
                     nextPath.edgeList.Add(edge);
                     nextPath.weight += 1;
-                    findPathUnique(edge.to, nextPath, nextUsedAlphabet);
+                    FindPathUnique(edge.to, nextPath, nextUsedAlphabet);
                 }
             }
 
@@ -179,7 +179,7 @@ namespace Core
             return;
         }
 
-        public List<string> solveGenerateUnique(List<string> words)
+        public List<string> SolveGenerateUnique(List<string> words)
         {
             List<string> results = new List<string>();
             List<List<Edge>> chains = new List<List<Edge>>();
@@ -189,11 +189,11 @@ namespace Core
             //     Console.WriteLine(word);
             // }
 
-            this.graph = new Graph();
-            graph.buildGraghForAllWords(words);
+            graph = new Graph();
+            graph.BuildGraghForAllWords(words);
             // graph.debugOutput();
 
-            bool isDAG = judgeCircle();
+            bool isDAG = JudgeCircle();
 
             // Console.WriteLine(isDAG);
             //
@@ -220,7 +220,7 @@ namespace Core
             //     Console.WriteLine($"{key.word}: {isVisit[key]}");
             // }
 
-            findPathUnique(graph.StartNode, new Path(), new HashSet<char>());
+            FindPathUnique(graph.StartNode, new Path(), new HashSet<char>());
 
             Path candidatePath = new Path();
 
@@ -232,13 +232,13 @@ namespace Core
                 }
             }
 
-            results.AddRange(candidatePath.outputPathByWord());
+            results.AddRange(candidatePath.OutputPathByWord());
 
             return results;
         }
 
         // GET_PATH_MOST_OR_LONGEST
-        public void findPathMostOrLongest(Node nowNode, Path nowPath, char begin, char tail, bool isMost)
+        public void FindPathMostOrLongest(Node nowNode, Path nowPath, char begin, char tail, bool isMost)
         {
             isVisit[nowNode] = true;
             if (nowNode.Equals(graph.EndNode))
@@ -265,7 +265,7 @@ namespace Core
                         continue;
                     }
 
-                    Path nextPath = nowPath.clonePath();
+                    Path nextPath = nowPath.ClonePath();
                     nextPath.edgeList.Add(edge);
                     if (isMost)
                     {
@@ -275,7 +275,7 @@ namespace Core
                     {
                         nextPath.weight += edge.weight;
                     }
-                    findPathMostOrLongest(edge.to, nextPath, begin, tail, isMost);
+                    FindPathMostOrLongest(edge.to, nextPath, begin, tail, isMost);
                 }
             }
 
@@ -283,7 +283,7 @@ namespace Core
             return;
         }
 
-        public List<string> solveGenerateMostOrLongest(List<string> words, char begin, char tail, bool canLoop, bool isMost)
+        public List<string> SolveGenerateMostOrLongest(List<string> words, char begin, char tail, bool canLoop, bool isMost)
         {
             List<string> results = new List<string>();
             List<List<Edge>> chains = new List<List<Edge>>();
@@ -293,11 +293,11 @@ namespace Core
             //     Console.WriteLine(word);
             // }
 
-            this.graph = new Graph();
-            graph.buildGraghForAllWords(words);
+            graph = new Graph();
+            graph.BuildGraghForAllWords(words);
             // graph.debugOutput();
 
-            bool isDAG = judgeCircle();
+            bool isDAG = JudgeCircle();
 
             // Console.WriteLine(isDAG);
             //
@@ -325,7 +325,7 @@ namespace Core
             //     Console.WriteLine($"{key.word}: {isVisit[key]}");
             // }
 
-            findPathMostOrLongest(graph.StartNode, new Path(), begin, tail, isMost);
+            FindPathMostOrLongest(graph.StartNode, new Path(), begin, tail, isMost);
 
             Path candidatePath = new Path();
 
@@ -337,7 +337,7 @@ namespace Core
                 }
             }
 
-            results.AddRange(candidatePath.outputPathByWord());
+            results.AddRange(candidatePath.OutputPathByWord());
 
             return results;
         }

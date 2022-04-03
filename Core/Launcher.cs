@@ -13,7 +13,7 @@ namespace Core
         {
             Solver solver = new Solver();
             List<string> results;
-            results = solver.solveGenerateMostOrLongest(Utility.convertFromCharArrayToString(words, len), head, tail, enable_loop, true);
+            results = solver.SolveGenerateMostOrLongest(Utility.ConvertFromCharArrayToString(words, len), head, tail, enable_loop, true);
             for (int i = 0; i < results.Count; i++)
             {
                 result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
@@ -25,7 +25,7 @@ namespace Core
             Solver solver = new Solver();
             List<string> results;
             // TODO: >20000?
-            results = solver.solveGenerateAll(Utility.convertFromCharArrayToString(words, len));
+            results = solver.SolveGenerateAll(Utility.ConvertFromCharArrayToString(words, len));
             for (int i = 0; i < results.Count; i++)
             {
                 result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
@@ -36,7 +36,7 @@ namespace Core
         {
             Solver solver = new Solver();
             List<string> results;
-            results = solver.solveGenerateUnique(Utility.convertFromCharArrayToString(words, len));
+            results = solver.SolveGenerateUnique(Utility.ConvertFromCharArrayToString(words, len));
             for (int i = 0; i < results.Count; i++)
             {
                 result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
@@ -47,7 +47,7 @@ namespace Core
         {
             Solver solver = new Solver();
             List<string> results;
-            results = solver.solveGenerateMostOrLongest(Utility.convertFromCharArrayToString(words, len), head, tail, enable_loop, false);
+            results = solver.SolveGenerateMostOrLongest(Utility.ConvertFromCharArrayToString(words, len), head, tail, enable_loop, false);
             for (int i = 0; i < results.Count; i++)
             {
                 result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);

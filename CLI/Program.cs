@@ -159,14 +159,21 @@ namespace CLI
                 type = OperationType.Most;
             }
 
-            List<string> toWrite =
-                CallWrapper.CallCoreByOptions(fileName, type, headLetter ?? '\0', tailLetter ?? '\0', allowingRings);
-            // Use wrapper to handle calling in order to avoid unsafe main function.
-
-            if (toWrite.Count > 0)
+            try
             {
-                File.WriteAllText("solution.txt", string.Join("\n", toWrite));
-                // Gather and output results.
+                List<string> toWrite =
+                    CallWrapper.CallCoreByOptions(fileName, type, headLetter ?? '\0', tailLetter ?? '\0', allowingRings);
+                // Use wrapper to handle calling in order to avoid unsafe main function.
+                if (toWrite.Count > 0)
+                {
+                    File.WriteAllText("solution.txt", string.Join("\n", toWrite));
+                    // Gather and output results.
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.ToString());
+                return;
             }
         }
     }

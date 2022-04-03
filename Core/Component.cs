@@ -34,15 +34,17 @@ namespace Core
             this.end = end;
         }
 
-        public Node deepCloneNode()
+        public Node DeepCloneNode()
         {
-            Node clone = new Node(word, id, begin, end);
-            clone.inDeg = inDeg;
-            clone.outDeg = outDeg;
+            Node clone = new Node(word, id, begin, end)
+            {
+                inDeg = inDeg,
+                outDeg = outDeg
+            };
             return clone;
         }
 
-        public string debugOutput()
+        public string DebugOutput()
         {
             return $"{word}: {id},{inDeg},{outDeg}.";
         }
@@ -69,15 +71,15 @@ namespace Core
         public List<Edge> edgeList = new List<Edge>();
         public int weight = 0;
 
-        public Path clonePath()
+        public Path ClonePath()
         {
             Path clone = new Path();
-            clone.edgeList.AddRange(this.edgeList);
+            clone.edgeList.AddRange(edgeList);
             clone.weight = weight;
             return clone;
         }
 
-        public string outputPath()
+        public string OutputPath()
         {
             string result = "";
             foreach (var edge in edgeList)
@@ -91,7 +93,7 @@ namespace Core
             return result;
         }
 
-        public List<string> outputPathByWord()
+        public List<string> OutputPathByWord()
         {
             List<string> result = new List<string>();
 
@@ -109,8 +111,8 @@ namespace Core
 
     internal class Graph
     {
-        public Dictionary<char, HashSet<Node>> wordDictionaryByBegin = new Dictionary<Char, HashSet<Node>>();
-        public Dictionary<char, HashSet<Node>> wordDictionaryByEnd = new Dictionary<Char, HashSet<Node>>();
+        public Dictionary<char, HashSet<Node>> wordDictionaryByBegin = new Dictionary<char, HashSet<Node>>();
+        public Dictionary<char, HashSet<Node>> wordDictionaryByEnd = new Dictionary<char, HashSet<Node>>();
         public Dictionary<Node, HashSet<Edge>> edges = new Dictionary<Node, HashSet<Edge>>();
         public Dictionary<int, Edge> edgeSet = new Dictionary<int, Edge>();
         public Dictionary<string, Node> nodeSet = new Dictionary<string, Node>();
@@ -123,7 +125,7 @@ namespace Core
         private int edgeID = 1;
 
         // Build a standard graph for all word chains search.
-        public void buildGraghForAllWords(List<string> words)
+        public void BuildGraghForAllWords(List<string> words)
         {
             nodeSet.Add("___Start___", StartNode);
             nodeSet.Add("___End___", EndNode);
@@ -206,11 +208,11 @@ namespace Core
             }
         }
 
-        public void debugOutput()
+        public void DebugOutput()
         {
             foreach (var node in nodeSet.Values)
             {
-                Console.WriteLine(node.debugOutput());
+                Console.WriteLine(node.DebugOutput());
             }
 
             foreach (var edge in edgeSet.Values)

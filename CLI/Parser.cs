@@ -9,17 +9,7 @@ namespace CLI
 {
     internal class Parser
     {
-        private static bool isAlphabet(char c)
-        {
-            if ((c <= 'z' && c >= 'a') || (c <= 'Z' && c >= 'A'))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public static unsafe int parse(string inputFile, char*[] words)
+        public static unsafe int Parse(string inputFile, char*[] words)
         {
             // Console.WriteLine("Now parsing.");
             int wordNum = 0;
@@ -29,16 +19,16 @@ namespace CLI
 
             foreach (var c in text)
             {
-                if (Parser.isAlphabet(c))
+                if (char.IsLetter(c))
                 {
-                    tempString = tempString + c;
+                    tempString += c;
                     inWord = true;
                 }
                 else
                 {
                     if (inWord)
                     {
-                        tempString = tempString + '\0';
+                        tempString += '\0';
                         // Console.WriteLine($"{tempString}");
                         tempString = tempString.ToLower();
                         words[wordNum] = (char*)Marshal.StringToHGlobalUni(tempString);
@@ -52,14 +42,12 @@ namespace CLI
 
             if (inWord)
             {
-                tempString = tempString + '\0';
+                tempString += '\0';
                 // Console.WriteLine($"{tempString}");
                 tempString = tempString.ToLower();
                 words[wordNum] = (char*)Marshal.StringToHGlobalUni(tempString);
                 wordNum++;
-                tempString = "";
             }
-
 
             return wordNum;
         }
