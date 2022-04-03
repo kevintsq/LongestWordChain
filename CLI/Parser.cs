@@ -13,27 +13,27 @@ namespace CLI
         {
             // Console.WriteLine("Now parsing.");
             int wordNum = 0;
-            string text = System.IO.File.ReadAllText(inputFile);
-            string tempString = "";
+            byte[] text = System.IO.File.ReadAllBytes(inputFile); 
+            
+            StringBuilder sb = new StringBuilder();
             bool inWord = false;
 
-            foreach (var c in text)
+            foreach (char c in text)
             {
                 if (char.IsLetter(c))
                 {
-                    tempString += c;
+                    sb.Append(c);
                     inWord = true;
                 }
                 else
                 {
                     if (inWord)
                     {
-                        tempString += '\0';
-                        // Console.WriteLine($"{tempString}");
-                        tempString = tempString.ToLower();
-                        words[wordNum] = (char*)Marshal.StringToHGlobalUni(tempString);
-                        wordNum++;
-                        tempString = "";
+                        string word = sb.ToString();
+                        // Console.WriteLine(word);
+                        word = word.ToLower();
+                        words[wordNum++] = (char*)Marshal.StringToHGlobalUni(word);
+                        sb.Clear();
                     }
 
                     inWord = false;
@@ -42,11 +42,10 @@ namespace CLI
 
             if (inWord)
             {
-                tempString += '\0';
-                // Console.WriteLine($"{tempString}");
-                tempString = tempString.ToLower();
-                words[wordNum] = (char*)Marshal.StringToHGlobalUni(tempString);
-                wordNum++;
+                string word = sb.ToString();
+                // Console.WriteLine(word);
+                word = word.ToLower();
+                words[wordNum++] = (char*)Marshal.StringToHGlobalUni(word);
             }
 
             return wordNum;
