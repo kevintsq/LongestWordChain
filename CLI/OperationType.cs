@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core
+namespace CLI
 {
-    public class Class1
+    enum OperationType
     {
+        All,
+        Unique,
+        Longest,
+        Most
     }
 }
