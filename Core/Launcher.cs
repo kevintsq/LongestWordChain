@@ -1,4 +1,5 @@
-﻿using System;
+﻿// using RGiesecke.DllExport;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,6 +12,7 @@ namespace Core
     {
         public static int MAX_RESULT_AMOUNT = 20000;
         
+        // [DllExport("gen_chain_word", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe int gen_chain_word(char** words, int len, char** result, char head, char tail, bool enable_loop)
         {
             Solver solver = new Solver();
@@ -29,6 +31,8 @@ namespace Core
                 return results.Count;
             }
         }
+
+        // [DllExport("gen_chains_all", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe int gen_chains_all(char** words, int len, char** result)
         {
             Solver solver = new Solver();
@@ -47,6 +51,8 @@ namespace Core
                 return results.Count;
             }
         }
+
+        // [DllExport("gen_chain_word_unique", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe int gen_chain_word_unique(char** words, int len, char** result)
         {
             Solver solver = new Solver();
@@ -65,6 +71,8 @@ namespace Core
                 return results.Count;
             }
         }
+
+        // [DllExport("gen_chain_char", CallingConvention = CallingConvention.Cdecl)]
         public static unsafe int gen_chain_char(char** words, int len, char** result, char head, char tail, bool enable_loop)
         {
             Solver solver = new Solver();
