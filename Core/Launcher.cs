@@ -9,50 +9,79 @@ namespace Core
 {
     public class Launcher
     {
-        public static unsafe int gen_chain_word(char*[] words, int len, char*[] result, char head, char tail, bool enable_loop)
+        public static int MAX_RESULT_AMOUNT = 20000;
+        
+        public static unsafe int gen_chain_word(char** words, int len, char** result, char head, char tail, bool enable_loop)
         {
             Solver solver = new Solver();
             List<string> results;
-            results = solver.SolveGenerateMostOrLongest(Utility.ConvertFromCharArrayToString(words, len), head, tail, enable_loop, true);
-            for (int i = 0; i < results.Count; i++)
+            results = solver.SolveGenerateMostOrLongest(Utility.ConvertCharArrayToStringList(words, len), head, tail, enable_loop, true);
+            if (results.Count > MAX_RESULT_AMOUNT)
             {
-                result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                return -1;
             }
-            return results.Count;
+            else
+            {
+                for (int i = 0; i < results.Count; i++)
+                {
+                    result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                }
+                return results.Count;
+            }
         }
-        public static unsafe int gen_chains_all(char*[] words, int len, char*[] result)
+        public static unsafe int gen_chains_all(char** words, int len, char** result)
         {
             Solver solver = new Solver();
             List<string> results;
-            // TODO: >20000?
-            results = solver.SolveGenerateAll(Utility.ConvertFromCharArrayToString(words, len));
-            for (int i = 0; i < results.Count; i++)
+            results = solver.SolveGenerateAll(Utility.ConvertCharArrayToStringList(words, len));
+            if (results.Count > MAX_RESULT_AMOUNT)
             {
-                result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                return -1;
             }
-            return results.Count;
+            else
+            {
+                for (int i = 0; i < results.Count; i++)
+                {
+                    result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                }
+                return results.Count;
+            }
         }
-        public static unsafe int gen_chain_word_unique(char*[] words, int len, char*[] result)
+        public static unsafe int gen_chain_word_unique(char** words, int len, char** result)
         {
             Solver solver = new Solver();
             List<string> results;
-            results = solver.SolveGenerateUnique(Utility.ConvertFromCharArrayToString(words, len));
-            for (int i = 0; i < results.Count; i++)
+            results = solver.SolveGenerateUnique(Utility.ConvertCharArrayToStringList(words, len));
+            if (results.Count > MAX_RESULT_AMOUNT)
             {
-                result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                return -1;
             }
-            return results.Count;
+            else
+            {
+                for (int i = 0; i < results.Count; i++)
+                {
+                    result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                }
+                return results.Count;
+            }
         }
-        public static unsafe int gen_chain_char(char*[] words, int len, char*[] result, char head, char tail, bool enable_loop)
+        public static unsafe int gen_chain_char(char** words, int len, char** result, char head, char tail, bool enable_loop)
         {
             Solver solver = new Solver();
             List<string> results;
-            results = solver.SolveGenerateMostOrLongest(Utility.ConvertFromCharArrayToString(words, len), head, tail, enable_loop, false);
-            for (int i = 0; i < results.Count; i++)
+            results = solver.SolveGenerateMostOrLongest(Utility.ConvertCharArrayToStringList(words, len), head, tail, enable_loop, false);
+            if (results.Count > MAX_RESULT_AMOUNT)
             {
-                result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                return -1;
             }
-            return results.Count;
+            else
+            {
+                for (int i = 0; i < results.Count; i++)
+                {
+                    result[i] = (char*)Marshal.StringToHGlobalUni(results[i]);
+                }
+                return results.Count;
+            }
         }
     }
 }

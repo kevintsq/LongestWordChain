@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,13 +10,15 @@ namespace CLI
     internal class CallWrapper
         // Wrapper module for calling Core, should be rewritten to call by loading lib(dll) at stage 2.
     {
+        public static int MAX_WORD_AMOUNT = 10000;
+        public static int MAX_RESULT_AMOUNT = 20000;
+        
         public static unsafe List<string> CallCoreByOptions(string inputFileName, OperationType type, char head, char tail, bool loop)
         {
-            char*[] forWords = new char*[10501]; // Allocate space for ptr.
-            
+            char** forWords = (char**)Marshal.AllocHGlobal(MAX_WORD_AMOUNT);  // Allocate space for ptr.
             int wordNum = Parser.Parse(inputFileName, forWords);
 
-            char*[] forResults = new char*[20501]; // Allocate space for ptr.
+            char** forResults = (char**)Marshal.AllocHGlobal(MAX_RESULT_AMOUNT); // Allocate space for ptr.
             
             int reNum;
 
@@ -38,22 +41,37 @@ namespace CLI
                     break;
             }
 
-            re.Add(reNum.ToString());
-            for (int i = 0; i < reNum; i++)
-            {
-                re.Add(new string(forResults[i]));
-            }
-
-            /*
-             // To test parser.
-            re.Add(wordNum.ToString());
             for (int i = 0; i < wordNum; i++)
             {
-                re.Add(new string(forWords[i]));
+                Marshal.FreeHGlobal((IntPtr)forWords[i]);
             }
-            */
+            Marshal.FreeHGlobal((IntPtr)forWords);
 
-            return re;
+            if (reNum < 0)
+            {
+                Marshal.FreeHGlobal((IntPtr)forResults);
+                throw new Exception("MAX_RESULT_AMOUNT is exceeded.");
+            }
+            else
+            {
+                re.Add(reNum.ToString());
+                for (int i = 0; i < reNum; i++)
+                {
+                    re.Add(new string(forResults[i]));
+                    Marshal.FreeHGlobal((IntPtr)forResults[i]);
+                }
+                Marshal.FreeHGlobal((IntPtr)forResults);
+                /*
+                 // To test parser.
+                re.Add(wordNum.ToString());
+                for (int i = 0; i < wordNum; i++)
+                {
+                    re.Add(new string(forWords[i]));
+                }
+                */
+
+                return re;
+            }
         }
     }
 }

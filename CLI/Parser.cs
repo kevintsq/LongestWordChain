@@ -9,7 +9,7 @@ namespace CLI
 {
     internal class Parser
     {
-        public static unsafe int Parse(string inputFile, char*[] words)
+        public static unsafe int Parse(string inputFile, char** words)
         {
             // Console.WriteLine("Now parsing.");
             int wordNum = 0;
