@@ -114,7 +114,7 @@ namespace Core
 
             if (isDAG)
             {
-                Console.WriteLine("^^^^ !HAS CIRCLE! ^^^^");
+                throw new CircleDetected();
             }
 
             // foreach (var node in topoNodes)
@@ -201,7 +201,7 @@ namespace Core
 
             if (isDAG)
             {
-                Console.WriteLine("^^^^ !HAS CIRCLE! ^^^^");
+                throw new CircleDetected();
             }
 
             // foreach (var node in topoNodes)
@@ -305,8 +305,7 @@ namespace Core
 
             if (isDAG && !canLoop)
             {
-                Console.WriteLine("^^^^ !HAS CIRCLE! ^^^^");
-                // TODO: Exception::NotDAGButRequired.
+                throw new CircleDetected();
             }
 
             // foreach (var node in topoNodes)

@@ -29,7 +29,7 @@ namespace CLI
                 "Usage: Wordlist.exe [OPTIONS] <WordList>.txt",
                 "Options:",
                 {
-                    "n", "Outputs the number of word chains, including nested chains.",
+                    "n", "Outputs the number of word chains, including nested chains to stdout.",
                     v => outputsNumber = v != null
                 },
                 {
@@ -131,6 +131,13 @@ namespace CLI
                 return;
             }
 
+            if (outputsNumber && (headLetter != null || tailLetter != null || allowingRings))
+            {
+                Console.Error.WriteLine("Option `-n' cannot be used with option `-h', `-t' or `-r'.");
+                p.WriteOptionDescriptions(Console.Error);
+                return;
+            }
+
             if (differentInitials && (headLetter != null || tailLetter != null || allowingRings))
             {
                 Console.Error.WriteLine("Option `-m' cannot be used with option `-h', `-t' or `-r'.");
@@ -166,13 +173,20 @@ namespace CLI
                 // Use wrapper to handle calling in order to avoid unsafe main function.
                 if (toWrite.Count > 0)
                 {
-                    File.WriteAllText("solution.txt", string.Join("\n", toWrite));
+                    if (outputsNumber)
+                    {
+                        toWrite.ForEach(Console.WriteLine);
+                    }
+                    else
+                    {
+                        File.WriteAllText("solution.txt", string.Join("\n", toWrite));
                     // Gather and output results.
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine(ex.ToString());
+                Console.Error.WriteLine(ex.Message);
                 return;
             }
         }
