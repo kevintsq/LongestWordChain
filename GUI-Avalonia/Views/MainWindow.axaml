@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:GUI_Avalonia.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="550"
+		Width="400"
+		Height="550"
+        x:Class="GUI_Avalonia.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="LoooongWordChain">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<StackPanel Background="White"
+				Margin="20">
+		<TextBlock Text="LoooongWordChain" FontSize="30" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+		
+		<TextBlock Margin="0,15,0,0" Text="Generate Type:" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+		<ComboBox SelectedIndex="{Binding GenerateType}"
+				  Margin="0,5">
+			<ComboBoxItem>全部单词链</ComboBoxItem>
+			<ComboBoxItem>首字母不重复的单词链</ComboBoxItem>
+			<ComboBoxItem>字母数最多的单词链</ComboBoxItem>
+			<ComboBoxItem>单词数最多的单词链</ComboBoxItem>
+		</ComboBox>
+
+		<TextBlock Margin="0,15,0,0" Text="Allow Loop?" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+		<CheckBox IsChecked="{Binding CanLoop}" />
+
+		<TextBlock Margin="0,15,0,0" Text="Choose a Head Letter:" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+		<TextBox Text="{Binding HeadLetter}" HorizontalAlignment="Left" Margin="0,5" Watermark="letter" />
+
+		<TextBlock Margin="0,15,0,0" Text="Choose a Tail Letter:" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+		<TextBox Text="{Binding TailLetter}" HorizontalAlignment="Left"  Margin="0,5" Watermark="letter" />
+
+		<TextBlock Margin="0,15,0,0" Text="Input File Name:" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+		<TextBox Text="{Binding InputFileName}" Margin="0,5" Watermark="wordlist.txt" />
+
+		<TextBlock Margin="0,15,0,0" Text="Output File Name:" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+		<TextBox Text="{Binding OutputFileName}" Margin="0,5" Watermark="solution.txt" />
+
+		<Button Margin="0,15,0,0" HorizontalAlignment="Stretch"
+					Command="{Binding Generate}"
+				>
+			<TextBlock Text="Generate Word Chain!" FontSize="15" FontFamily="/Assets/Fonts/title.ttf#Gotham" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		</Button>
+
+	</StackPanel>
+</Window>
