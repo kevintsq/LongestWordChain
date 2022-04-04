@@ -208,6 +208,42 @@ namespace Core
             }
         }
 
+        private class WordIdentifier
+        {
+            public char begin;
+            public char end;
+
+            public WordIdentifier(char begin, char end)
+            {
+                this.begin = begin;
+                this.end = end;
+            }
+        }
+
+        public void BuildGraphForFilteredWords(List<string> words, bool isMost)
+        {
+            Dictionary<WordIdentifier, string> wordDictionary = new Dictionary<WordIdentifier, string>();
+            WordIdentifier wordIdentifier;
+            foreach (string word in words)
+            {
+                wordIdentifier = new WordIdentifier(word[0], word[word.Length - 1]);
+                if (!wordDictionary.ContainsKey(wordIdentifier))
+                {
+                    wordDictionary.Add(wordIdentifier, word);
+                } 
+                else
+                {
+                    if (!isMost)
+                    {
+                        if (word.Length > wordDictionary[wordIdentifier].Length)
+                        {
+                            wordDictionary[wordIdentifier] = word;
+                        }
+                    }
+                }
+            }
+            BuildGraghForAllWords(new List<string>(wordDictionary.Values));
+        }
         public void DebugOutput()
         {
             foreach (var node in nodeSet.Values)
