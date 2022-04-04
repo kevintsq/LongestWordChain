@@ -313,6 +313,7 @@ namespace Core
             //     Console.WriteLine(node.debugOutput());
             // }
 
+
             isVisit = new Dictionary<Node, bool>();
             foreach (var node in graph.nodeSet.Values)
             {
