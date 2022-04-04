@@ -37,8 +37,7 @@ namespace CLI
                     v => outputsMostWords = v != null
                 },
                 {
-                    "m",
-                    "Outputs the word chain containing the most number of words with different initials to solution.txt.",
+                    "m", "Outputs the word chain containing the most number of words with different initials to solution.txt.",
                     v => differentInitials = v != null
                 },
                 {
@@ -55,8 +54,7 @@ namespace CLI
                         }
                         else
                         {
-                            throw new OptionException(string.Format("Option `-h' requires a letter, not `{0}\'.", v),
-                                "h");
+                            throw new OptionException($"Option `-h' requires a letter, not `{v}'.", "h");
                         }
                     }
                 },
@@ -70,8 +68,7 @@ namespace CLI
                         }
                         else
                         {
-                            throw new OptionException(string.Format("Option `-t' requires a letter, not `{0}\'.", v),
-                                "t");
+                            throw new OptionException($"Option `-t' requires a letter, not `{v}'.", "t");
                         }
                     }
                 },
@@ -86,19 +83,19 @@ namespace CLI
             }
             catch (OptionException e)
             {
-                Console.WriteLine(e.Message);
+                Console.Error.WriteLine(e.Message);
                 p.WriteOptionDescriptions(Console.Error);
                 return;
             }
 
             if (!otherArgs.Any())
             {
+                Console.Error.WriteLine("Wordlist.exe receives exactly ONE wordlist file with extension .txt.");
                 p.WriteOptionDescriptions(Console.Error);
                 return;
             }
 
-            var invalidOptions =
-                from junk in otherArgs where junk.StartsWith("-") && !junk.EndsWith(".txt") select junk;
+            var invalidOptions = from arg in otherArgs where (arg.StartsWith("-") || arg.StartsWith("/")) && !arg.EndsWith(".txt") select arg;
             if (invalidOptions.Any())
             {
                 Console.Error.WriteLine("Invalid option(s): {0}", string.Join(" ", invalidOptions));
@@ -106,8 +103,7 @@ namespace CLI
                 return;
             }
 
-            var fileNames = (from junk in otherArgs where !junk.StartsWith("-") || junk.EndsWith(".txt") select junk)
-                .ToArray();
+            var fileNames = (from arg in otherArgs where !(arg.StartsWith("-") || arg.StartsWith("/")) || arg.EndsWith(".txt") select arg).ToArray();
             if (fileNames.Length != 1)
             {
                 Console.Error.WriteLine("Wordlist.exe receives exactly ONE wordlist file with extension .txt.");
@@ -115,9 +111,9 @@ namespace CLI
                 return;
             }
 
-            if (!(outputsNumber || outputsMostWords || differentInitials || outputsMostLetters || allowingRings))
+            if (!(outputsNumber || outputsMostWords || differentInitials || outputsMostLetters))
             {
-                Console.Error.WriteLine("At least one option should be given.");
+                Console.Error.WriteLine("At least one option [-n|-w|-m|-c] should be given.");
                 p.WriteOptionDescriptions(Console.Error);
                 return;
             }
@@ -145,7 +141,7 @@ namespace CLI
                 return;
             }
 
-            fileName = fileNames[0];
+            fileName = fileNames.First();
 
             OperationType type;
 
