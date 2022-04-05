@@ -238,16 +238,32 @@ namespace Core
         }
 
         // GET_PATH_MOST_OR_LONGEST
-        public void FindPathMostOrLongest(Node nowNode, Path nowPath, char begin, char tail, bool isMost)
+
+        private Path longestPath = new Path();
+        private int maxWeight = 0;
+
+        private Path tempPath = new Path();
+
+        public void FindPathMostOrLongest(Node nowNode, char begin, char tail, bool isMost)
         {
             isVisit[nowNode] = true;
             if (nowNode.Equals(graph.EndNode))
             {
-                if (nowPath.edgeList.Count > 2)
+                if (tempPath.edgeList.Count > 2)
                 {
-                    if (tail == '\0' || nowPath.edgeList[nowPath.edgeList.Count - 1].@from.end == tail)
+                    if (tail == '\0' || tempPath.edgeList[tempPath.edgeList.Count - 1].@from.end == tail)
                     {
-                        paths.Add(nowPath);
+                        // [Opt].
+
+                        if(tempPath.weight > maxWeight)
+                        {
+                            longestPath = tempPath.ClonePath();
+                            maxWeight = tempPath.weight;
+                            // Console.WriteLine(longestPath.OutputPath());
+                        }
+
+                        //
+                        // paths.Add(nowPath);
                     }
                 }
             }
@@ -265,22 +281,63 @@ namespace Core
                         continue;
                     }
 
-                    Path nextPath = nowPath.ClonePath();
-                    nextPath.edgeList.Add(edge);
+                    //
+                    tempPath.edgeList.Add(edge);
+                    //
+                    
                     if (isMost)
                     {
-                        nextPath.weight += 1;
+                        tempPath.weight += 1;
                     }
                     else
                     {
-                        nextPath.weight += edge.weight;
+                        tempPath.weight += edge.weight;
                     }
-                    FindPathMostOrLongest(edge.to, nextPath, begin, tail, isMost);
+                    FindPathMostOrLongest(edge.to, begin, tail, isMost);
                 }
+            }
+            
+            if (tempPath.edgeList.Count > 0)
+            {
+                if (isMost)
+                {
+                    tempPath.weight--;
+                }
+                else
+                {
+                    tempPath.weight -= tempPath.edgeList[tempPath.edgeList.Count - 1].weight;
+                }
+                tempPath.edgeList.RemoveAt(tempPath.edgeList.Count - 1);
             }
 
             isVisit[nowNode] = false;
             return;
+        }
+
+        public void FindPathMostOrLongestOnDAG(char begin, char tail, bool isMost)
+        {
+            foreach(var node in graph.edges.Keys)
+            {
+                if(node.Equals(graph.StartNode)||node.Equals(graph.EndNode))
+                {
+                    continue;
+                }
+                if (begin != '\0' && node.begin != begin)
+                {
+                    foreach(Edge edge in graph.edges[graph.StartNode])
+                    {
+                        if(edge.to == node)
+                        {
+                            graph.edges[graph.StartNode].Remove(edge);
+                            break;
+                        }
+                    }
+                }
+
+                if (tail != '\0' && node.end != tail)
+                {
+                }
+            }
         }
 
         public List<string> SolveGenerateMostOrLongest(List<string> words, char begin, char tail, bool canLoop, bool isMost)
@@ -293,17 +350,22 @@ namespace Core
             //     Console.WriteLine(word);
             // }
 
+            this.longestPath = new Path();
+            this.maxWeight = 0;
+
+            this.tempPath = new Path();
+
             graph = new Graph();
             graph.BuildGraghForAllWords(words);
             // graph.debugOutput();
 
-            bool isDAG = JudgeCircle();
+            bool notDAG = JudgeCircle();
 
             // Console.WriteLine(isDAG);
             //
             // Console.WriteLine(topoNodes.Count);
 
-            if (isDAG && !canLoop)
+            if (notDAG && !canLoop)
             {
                 throw new CircleDetected();
             }
@@ -324,11 +386,19 @@ namespace Core
             // {
             //     Console.WriteLine($"{key.word}: {isVisit[key]}");
             // }
+            if (notDAG)
+            {
+                FindPathMostOrLongest(graph.StartNode, begin, tail, isMost);
+            } 
+            else
+            {
+                FindPathMostOrLongest(graph.StartNode, begin, tail, isMost);
+            }
+            // Path candidatePath = new Path();
 
-            FindPathMostOrLongest(graph.StartNode, new Path(), begin, tail, isMost);
-
-            Path candidatePath = new Path();
-
+            // [Opt.]
+            // candidatePath = longestPath;
+            /*
             foreach (var path in paths)
             {
                 if (path.weight > candidatePath.weight)
@@ -336,8 +406,10 @@ namespace Core
                     candidatePath = path;
                 }
             }
+            */
+            //
 
-            results.AddRange(candidatePath.OutputPathByWord());
+            results.AddRange(longestPath.OutputPathByWord());
 
             return results;
         }
