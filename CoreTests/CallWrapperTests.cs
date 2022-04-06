@@ -174,7 +174,7 @@ namespace CLI.Tests
             }
             catch (Exception ex)
             {
-                ex.Equals(new Core.CircleDetected());
+                Assert.IsTrue(ex.GetType() == typeof(Core.CircleDetected));
             }
         }
     }
