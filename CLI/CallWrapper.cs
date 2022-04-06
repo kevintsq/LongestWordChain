@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CLI
 {
-    internal class CallWrapper
+    public class CallWrapper
         // Wrapper module for calling Core, should be rewritten to call by loading lib(dll) at stage 2.
     {
         public static int MAX_WORD_AMOUNT = 10000;

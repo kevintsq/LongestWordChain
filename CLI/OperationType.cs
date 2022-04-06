@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CLI
 {
-    enum OperationType
+    public enum OperationType
     {
         All,
         Unique,
