@@ -220,6 +220,7 @@ namespace Core
             }
         }
 
+        /*
         public void BuildGraphForFilteredWords(List<string> words, bool isMost)
         {
             Dictionary<WordIdentifier, string> wordDictionary = new Dictionary<WordIdentifier, string>();
@@ -244,6 +245,8 @@ namespace Core
             }
             BuildGraghForAllWords(new List<string>(wordDictionary.Values));
         }
+        */
+
         public void DebugOutput()
         {
             foreach (var node in nodeSet.Values)
