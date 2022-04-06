@@ -44,10 +44,10 @@ namespace Core
             return clone;
         }
 
-        public string DebugOutput()
-        {
-            return $"{word}: {id},{inDeg},{outDeg}.";
-        }
+        //public string DebugOutput()
+        //{
+        //    return $"{word}: {id},{inDeg},{outDeg}.";
+        //}
     }
 
     internal class Edge
@@ -247,17 +247,17 @@ namespace Core
         }
         */
 
-        public void DebugOutput()
-        {
-            foreach (var node in nodeSet.Values)
-            {
-                Console.WriteLine(node.DebugOutput());
-            }
+        //public void DebugOutput()
+        //{
+        //    foreach (var node in nodeSet.Values)
+        //    {
+        //        Console.WriteLine(node.DebugOutput());
+        //    }
 
-            foreach (var edge in edgeSet.Values)
-            {
-                Console.WriteLine($"{edge.@from.word}->{edge.@to.word}:{edge.weight}");
-            }
-        }
+        //    foreach (var edge in edgeSet.Values)
+        //    {
+        //        Console.WriteLine($"{edge.@from.word}->{edge.@to.word}:{edge.weight}");
+        //    }
+        //}
     }
 }

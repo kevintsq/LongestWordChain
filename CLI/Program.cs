@@ -175,7 +175,7 @@ namespace CLI
                     }
                     else
                     {
-                        File.WriteAllText("solution.txt", string.Join("\n", toWrite));
+                        File.WriteAllText($"{AppDomain.CurrentDomain.BaseDirectory}solution.txt", string.Join("\n", toWrite.GetRange(1, toWrite.Count - 1)));
                     // Gather and output results.
                     }
                 }

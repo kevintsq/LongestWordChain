@@ -7,10 +7,14 @@
     <TrimMode>copyused</TrimMode>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaXaml Remove="Models\**" />
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
     <None Remove=".gitignore" />
     <None Remove="Assets\Fonts\title-bold.ttf" />
   </ItemGroup>

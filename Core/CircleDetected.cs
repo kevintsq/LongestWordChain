@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    internal class CircleDetected: Exception
+    public class CircleDetected: Exception
     {
         public CircleDetected(): base("Circle is detected without `-r' option."){}
     }
